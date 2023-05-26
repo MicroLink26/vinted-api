@@ -152,7 +152,7 @@ router.post(
             convertToBase64(req.files.picture),
             {
               // Dans le dossier suivant
-              folder: `api/vinted/offers/${newOffer._id}`,
+              folder: `/vinted/offers/${newOffer._id}`,
               // Avec le public_id suivant
               public_id: "preview",
             }
@@ -175,7 +175,7 @@ router.post(
               const result = await cloudinary.uploader.upload(
                 convertToBase64(picture),
                 {
-                  folder: `api/vinted/offers/${newOffer._id}`,
+                  folder: `/vinted/offers/${newOffer._id}`,
                   public_id: "preview",
                 }
               );
@@ -187,7 +187,7 @@ router.post(
               const result = await cloudinary.uploader.upload(
                 convertToBase64(picture),
                 {
-                  folder: `api/vinted-v2/offers/${newOffer._id}`,
+                  folder: `/vinted/offers/${newOffer._id}`,
                 }
               );
               newOffer.product_pictures.push({ secure_url: result.secure_url });
@@ -273,7 +273,7 @@ router.put(
         const result = await cloudinary.uploader.upload(
           convertToBase64(req.files.picture),
           {
-            folder: `api/vinted-v2/offers/${offerToModify._id}`,
+            folder: `/vinted/offers/${offerToModify._id}`,
             public_id: "preview",
           }
         );
@@ -296,10 +296,10 @@ router.delete("/offer/delete/:id", isAuthenticated, async (req, res) => {
   try {
     //Je supprime ce qui il y a dans le dossier portant le nom de l'id de l'offre sur cloudinary
     await cloudinary.api.delete_resources_by_prefix(
-      `api/vinted-v2/offers/${req.params.id}`
+      `/vinted/offers/${req.params.id}`
     );
     //Une fois le dossier vide, je peux le supprimer !
-    await cloudinary.api.delete_folder(`api/vinted-v2/offers/${req.params.id}`);
+    await cloudinary.api.delete_folder(`/vinted/offers/${req.params.id}`);
     // Je vais chercher l'offre dans mongoDB
     offerToDelete = await Offer.findById(req.params.id);
     // Je la supprime
@@ -342,7 +342,7 @@ router.get("/reset-offers", fileUpload(), async (req, res) => {
       //   const folderDeletionPromises = offers.map((offer) => {
       //     if (offer.product_image) {
       //       return cloudinary.api.delete_folder(
-      //         `/api/vinted-v2/offers/${offer._id}`
+      //         `//vinted/offers/${offer._id}`
       //       );
       //     } else {
       //       return null;
@@ -375,7 +375,7 @@ router.get("/reset-offers", fileUpload(), async (req, res) => {
         const resultImage = await cloudinary.uploader.upload(
           products[i].product_image.secure_url,
           {
-            folder: `api/vinted-v2/offers/${newOffer._id}`,
+            folder: `/vinted/offers/${newOffer._id}`,
             public_id: "preview",
           }
         );
@@ -387,7 +387,7 @@ router.get("/reset-offers", fileUpload(), async (req, res) => {
             const resultPictures = await cloudinary.uploader.upload(
               products[i].product_pictures[j].secure_url,
               {
-                folder: `api/vinted-v2/offers/${newOffer._id}`,
+                folder: `/vinted/offers/${newOffer._id}`,
               }
             );
 
