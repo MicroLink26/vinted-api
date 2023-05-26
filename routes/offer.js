@@ -152,14 +152,14 @@ router.post(
             convertToBase64(req.files.picture),
             {
               // Dans le dossier suivant
-              folder: `api/vinted-v2/offers/${newOffer._id}`,
+              folder: `api/vinted/offers/${newOffer._id}`,
               // Avec le public_id suivant
               public_id: "preview",
             }
           );
 
           // ajout de l'image dans newOffer
-          newOffer.product_image = result;
+          newOffer.product_image = { secure_url: result.secure_url };
           // On rajoute l'image à la clef product_pictures
           newOffer.product_pictures.push(result);
         } else {
@@ -175,13 +175,13 @@ router.post(
               const result = await cloudinary.uploader.upload(
                 convertToBase64(picture),
                 {
-                  folder: `api/vinted-v2/offers/${newOffer._id}`,
+                  folder: `api/vinted/offers/${newOffer._id}`,
                   public_id: "preview",
                 }
               );
               // ajout de l'image dans newOffer
-              newOffer.product_image = result;
-              newOffer.product_pictures.push(result);
+              newOffer.product_image = { secure_url: result.secure_url };
+              newOffer.product_pictures.push({ secure_url: result.secure_url });
             } else {
               // On envoie toutes les autres à cloudinary et on met les résultats dans product_pictures
               const result = await cloudinary.uploader.upload(
@@ -190,7 +190,7 @@ router.post(
                   folder: `api/vinted-v2/offers/${newOffer._id}`,
                 }
               );
-              newOffer.product_pictures.push(result);
+              newOffer.product_pictures.push({ secure_url: result.secure_url });
             }
           }
         }
