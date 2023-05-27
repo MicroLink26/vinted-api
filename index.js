@@ -10,6 +10,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require("./swagger_output.json");
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -35,6 +37,16 @@ app.use(paymentRoutes);
 
 app.get("/", (req, res) => {
   res.json("Bienvenue sur l'API de Vinted");
+});
+
+app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
+app.all("*", (req, res) => {
+  try {
+    return res.status(404).json("Page not found!");
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 });
 
 const server = app.listen(process.env.PORT || 4000, () => {
