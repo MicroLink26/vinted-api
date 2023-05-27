@@ -5,7 +5,7 @@ const doc = {
   info: {
     title: "Vinted API",
     description: "Designed for Le Reacteur Bootcamp",
-    version: "0.0.1",
+    version: process.env.SWAGGER_API_VERSION,
   },
   host: process.env.SWAGGER_HOST,
   schemes: [process.env.SWAGGER_SCHEMES],
