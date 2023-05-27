@@ -34,6 +34,16 @@ const Offer = require("../models/Offer");
 // déclaration de la route signup, utilisation de fileUpload pour réceptionner des formData
 router.post("/user/signup", fileUpload(), async (req, res) => {
   // #swagger.summary = 'Create a new user'
+
+
+  /*  #swagger.parameters['parameter_name'] = {
+                in: 'body',
+                description: 'Some description...',
+                schema:  { 
+                  $ref: '#/definitions/AddUser'
+                }
+        } */
+
   try {
     // Recherche dans la BDD. Est-ce qu'un utilisateur possède cet email ?
     const user = await User.findOne({ email: req.body.email });

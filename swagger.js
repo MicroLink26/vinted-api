@@ -2,6 +2,14 @@ require("dotenv").config();
 const swaggerAutogen = require("swagger-autogen")();
 
 const doc = {
+  definitions: {
+    AddUser: {
+      email: "jd@lereacteur.io",
+      password: "azerty",
+      username: "johndoe",
+      newsletter: true,
+    },
+  },
   info: {
     title: "Vinted API",
     description: "Designed for Le Reacteur Bootcamp",
