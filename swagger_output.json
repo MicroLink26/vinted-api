@@ -28,24 +28,11 @@
         "description": "",
         "parameters": [
           {
-            "name": "body",
+            "name": "parameter_name",
             "in": "body",
+            "description": "Some description...",
             "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                },
-                "username": {
-                  "example": "any"
-                },
-                "newsletter": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/AddUser"
             }
           }
         ],
@@ -329,6 +316,29 @@
           "500": {
             "description": "Internal Server Error"
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AddUser": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "jd@lereacteur.io"
+        },
+        "password": {
+          "type": "string",
+          "example": "azerty"
+        },
+        "username": {
+          "type": "string",
+          "example": "johndoe"
+        },
+        "newsletter": {
+          "type": "boolean",
+          "example": true
         }
       }
     }
