@@ -33,6 +33,7 @@ const Offer = require("../models/Offer");
 
 // déclaration de la route signup, utilisation de fileUpload pour réceptionner des formData
 router.post("/user/signup", fileUpload(), async (req, res) => {
+  // #swagger.summary = 'Create a new user'
   try {
     // Recherche dans la BDD. Est-ce qu'un utilisateur possède cet email ?
     const user = await User.findOne({ email: req.body.email });
@@ -97,6 +98,7 @@ router.post("/user/signup", fileUpload(), async (req, res) => {
 });
 
 router.post("/user/login", async (req, res) => {
+  // #swagger.summary = 'Log a user'
   try {
     const user = await User.findOne({ email: req.body.email });
 
@@ -122,140 +124,6 @@ router.post("/user/login", async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
-  }
-});
-
-// CETTE ROUTE SERT AU RESET DE LA BDD ENTRE 2 SESSIONS DE FORMATION. CELA NE FAIT PAS PARTIE DE L'EXERCICE.
-router.get("/reset-users", async (req, res) => {
-  if (req.headers.authorization) {
-    const token = req.headers.authorization.replace("Bearer ", "");
-
-    if (token !== process.env.ADMIN_TOKEN) {
-      return res.status(401).json({ error: "Unauthorized" });
-    } else {
-      // // On supprime les images, cloudinary ne permettant pas de supprimer des dossiers qui ne sont pas vides
-      // try {
-      //   const deleteResources = await cloudinary.api.delete_resources_by_prefix(
-      //     "api/vinted-v2/users"
-      //   );
-      // } catch (error) {
-      //   console.log(error);
-      //   return res.status(400).json({ message: error.message });
-      // }
-      // // On supprime les dossier qui sont maintenant vides
-      try {
-        // const users = await User.find();
-
-        // const folderDeletionPromise = users.map((user) => {
-        //   return cloudinary.api.delete_folder(
-        //     `/api/vinted-v2/users/${user._id}`
-        //   );
-        // });
-        // await Promise.all(folderDeletionPromise);
-        // Vider la collection User
-        await User.deleteMany({});
-      } catch (error) {
-        return res.status(500).json({ message: error.message });
-      }
-
-      // Créer les users
-
-      // Admin User
-      try {
-        const token = uid2(64);
-        const salt = uid2(64);
-        const hash = SHA256("azerty" + salt).toString(encBase64);
-
-        const adminUser = new User({
-          email: "nono@lereacteur.io",
-          token: token,
-          hash: hash,
-          salt: salt,
-          account: {
-            username: "Nono",
-          },
-        });
-
-        // uploader la photo de profile de l'admin user
-        // console.log("🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥");
-
-        const resultImage = await cloudinary.uploader.upload(
-          faker.random.image(),
-          {
-            folder: `api/vinted-v2/users/${adminUser._id}`,
-            public_id: "avatar",
-          }
-        );
-
-        adminUser.account.avatar = resultImage;
-        // sauvegarder l'admin user dans la BDD
-        await adminUser.save();
-      } catch (error) {
-        return res
-          .status(500)
-          .json({ error: "Error when creating admin user : " + error.message });
-      }
-      // Tableau contenant les users en attente de sauvegarde
-      const userTab = [];
-      // Tableau contenant les promesses des uploads sur cloudinary
-      const profilePicturesTabPromises = [];
-      // Random Users
-      for (let i = 0; i < 21; i++) {
-        try {
-          // Étape 1 : encrypter le mot de passe
-          // Générer le token et encrypter le mot de passe
-          const token = uid2(64);
-          const salt = uid2(64);
-          const hash = SHA256("azerty" + salt).toString(encBase64);
-
-          // Étape 2 : créer le nouvel utilisateur
-          const newUser = new User({
-            email: faker.internet.email().toLowerCase(),
-            token: token,
-            hash: hash,
-            salt: salt,
-            account: {
-              username: faker.internet.userName(),
-            },
-          });
-          // On push tous les users dans le tableau
-          userTab.push(newUser);
-
-          // Étape 3 : uploader la photo de profile du user
-
-          // On push dans ce tableau les promesses d'upload
-          profilePicturesTabPromises.push(
-            cloudinary.uploader.upload(faker.random.image(), {
-              folder: `api/vinted-v2/users/${newUser._id}`,
-              public_id: "avatar",
-            })
-          );
-        } catch (error) {
-          return res.status(500).json({ message: error.message });
-        }
-      }
-      // On attend la résolution des upload et on a les resultats dans ce tableau
-      const profilePicturesTabPromisesResult = await Promise.all(
-        profilePicturesTabPromises
-      );
-
-      // On parcourt le tableau de user et on leurs assigne à chacun une url renvoyée par cloudinary
-      for (let j = 0; j < userTab.length; j++) {
-        userTab[j].account.avatar = profilePicturesTabPromisesResult[j];
-      }
-
-      // On crée un tableau de promesse de sauvegarde des users
-      const userSavePromises = userTab.map((user) => {
-        return user.save();
-      });
-
-      // On attend qu'ils sonient tous sauvegardés
-      await Promise.all(userSavePromises);
-
-      res.status(200).json("🍺 All users saved !");
-    }
-  } else {
-    res.status(401).json({ error: "Unauthorized" });
   }
 });
 

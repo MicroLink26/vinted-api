@@ -24,6 +24,7 @@
     },
     "/user/signup": {
       "post": {
+        "summary": "Create a new user",
         "description": "",
         "parameters": [
           {
@@ -66,6 +67,7 @@
     },
     "/user/login": {
       "post": {
+        "summary": "Log a user",
         "description": "",
         "parameters": [
           {
@@ -100,31 +102,9 @@
         }
       }
     },
-    "/reset-users": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
     "/offers": {
       "get": {
+        "summary": "Receive a list of offers. Possibility to filter the results.",
         "description": "",
         "parameters": [
           {
@@ -170,6 +150,7 @@
     },
     "/offer/{id}": {
       "get": {
+        "summary": "Get an offer.",
         "description": "",
         "parameters": [
           {
@@ -191,6 +172,7 @@
     },
     "/offer/publish": {
       "post": {
+        "summary": "Create a new offer.",
         "description": "",
         "parameters": [
           {
@@ -250,6 +232,7 @@
     },
     "/offer/update/{id}": {
       "put": {
+        "summary": "Update an offer.",
         "description": "",
         "parameters": [
           {
@@ -321,6 +304,7 @@
     },
     "/offer/delete/{id}": {
       "delete": {
+        "summary": "Delete an offer.",
         "description": "",
         "parameters": [
           {
@@ -341,65 +325,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/reset-offers": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/payment": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "amount": {
-                  "example": "any"
-                },
-                "token": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
           },
           "500": {
             "description": "Internal Server Error"
