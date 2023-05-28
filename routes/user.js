@@ -15,11 +15,6 @@ const convertToBase64 = require("../utils/convertToBase64");
 // Import du package cloudinary
 const cloudinary = require("cloudinary").v2;
 
-// Package qui permet de générer des données aléatoires (ne pas en tenir compte, cela sert à réinitiliser la BDD entre 2 sessions de formation)
-const faker = require("faker");
-faker.locale = "fr";
-const owners = require("../data/owners.json");
-
 // Import du model User et Offer
 // afin d'éviter des erreurs (notamment dues à d'eventuelles références entre les collections)
 // nous vous conseillons d'importer touts vos models dans toutes vos routes
@@ -29,12 +24,11 @@ const owners = require("../data/owners.json");
 // - si un utilisateur ayant le même email existe déjà ou pas (route signup)
 // - quel est l'utilisateur qui souhaite se connecter (route login)
 const User = require("../models/User");
-const Offer = require("../models/Offer");
+//const Offer = require("../models/Offer");
 
 // déclaration de la route signup, utilisation de fileUpload pour réceptionner des formData
 router.post("/user/signup", fileUpload(), async (req, res) => {
   // #swagger.summary = 'Create a new user'
-
 
   /*  #swagger.parameters['parameter_name'] = {
                 in: 'body',
@@ -109,6 +103,14 @@ router.post("/user/signup", fileUpload(), async (req, res) => {
 
 router.post("/user/login", async (req, res) => {
   // #swagger.summary = 'Log a user'
+  /*  #swagger.parameters['parameter_name'] = {
+                in: 'body',
+                description: 'Some description...',
+                schema:  { 
+                  $ref: '#/definitions/LogInUser'
+                }
+        } */
+
   try {
     const user = await User.findOne({ email: req.body.email });
 
