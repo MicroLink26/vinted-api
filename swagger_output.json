@@ -58,18 +58,11 @@
         "description": "",
         "parameters": [
           {
-            "name": "body",
+            "name": "parameter_name",
             "in": "body",
+            "description": "Some description...",
             "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/LogInUser"
             }
           }
         ],
@@ -318,7 +311,6 @@
           }
         }
       }
-
     }
   },
   "definitions": {
@@ -342,7 +334,19 @@
           "example": true
         }
       }
-
+    },
+    "LogInUser": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string",
+          "example": "azerty"
+        },
+        "username": {
+          "type": "string",
+          "example": "johndoe"
+        }
+      }
     }
   }
 }

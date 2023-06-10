@@ -9,7 +9,12 @@ const doc = {
       username: "johndoe",
       newsletter: true,
     },
+    LogInUser: {
+      password: "azerty",
+      username: "johndoe",
+    },
   },
+
   info: {
     title: "Vinted API",
     description: "Designed for Le Reacteur Bootcamp",

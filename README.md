@@ -6,12 +6,12 @@
 
 Create a new user
 
-| Body       | Type   | Required |
-| ---------- | ------ | -------- |
-| `email`    | string | Yes      |
-| `password` | string | Yes      |
-| `username` | string | Yes      |
-| `phone`    | string | No       |
+| Body         | Type    | Required |
+| ------------ | ------- | -------- |
+| `email`      | string  | Yes      |
+| `password`   | string  | Yes      |
+| `username`   | string  | Yes      |
+| `newsletter` | boolean | Yes      |
 
 <br>
 <br>
@@ -26,13 +26,6 @@ Log a user
 | `password` | string | Yes      |
 
 <br>
-<br>
-
-### /reset-users (GET)
-
-This route resets the user database.
-Do not consider it.
-
 <br>
 
 ## Offer
@@ -135,9 +128,3 @@ Delete an offer
 
 <br>
 <br>
-
-### /reset-offers (GET)
-
-This route resets the offers database.
-Do not consider it.
-# vinted-api
