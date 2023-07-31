@@ -12,6 +12,7 @@ const Offer = mongoose.model("Offer", {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  archive: { type: Boolean, default: false },
 });
 
 module.exports = Offer;
