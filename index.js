@@ -9,7 +9,7 @@ const cloudinary = require("cloudinary").v2;
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use(morgan("dev"));
+
 const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("./swagger_output.json");
 
