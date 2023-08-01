@@ -3,7 +3,7 @@
   "info": {
     "title": "Vinted API",
     "description": "Designed for Le Reacteur Bootcamp",
-    "version": "1.0.1"
+    "version": "1.1.1"
   },
   "host": "site--backend-vinted--fg6zdpvl2w9z.code.run",
   "basePath": "/",
