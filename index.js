@@ -44,6 +44,5 @@ app.all("*", (req, res) => {
 });
 
 const server = app.listen(process.env.PORT || 4000, () => {
-  console.log("Server started 🔥");
+  console.log("Server started 🔥 to port " + process.env.PORT);
 });
-server.timeout = Number(process.env.SERVER_TIMEOUT) || 1000000;

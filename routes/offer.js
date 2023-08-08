@@ -18,16 +18,13 @@ const Offer = require("../models/Offer");
 // Import du middleware isAuthenticated
 const isAuthenticated = require("../middleware/isAuthenticated");
 
-// Import des datas (ne pas en tenir compte, cela sert au reset de la BDD entre 2 sessions de formation)
-const products = require("../data/products.json");
-
 // Route qui nous permet de récupérer une liste d'annonces, en fonction de filtres
 // Si aucun filtre n'est envoyé, cette route renverra l'ensemble des annonces
 router.get("/offers", async (req, res) => {
   // #swagger.summary = 'Receive a list of offers. Possibility to filter the results.'
   try {
     // Création d'un objet dans lequel on va sotcker nos différents filtres
-    let filters = {};
+    let filters = { archive: false };
 
     // Si on reçoit un query title
     if (req.query.title) {
@@ -295,24 +292,43 @@ router.put(
   }
 );
 
-// Route pour supprimer une offre, protégée par le middleware isAuthenticated, elle prend un params
 router.delete("/offer/delete/:id", isAuthenticated, async (req, res) => {
-  // #swagger.summary = 'Delete an offer.'
   try {
-    //Je supprime ce qui il y a dans le dossier portant le nom de l'id de l'offre sur cloudinary
-    await cloudinary.api.delete_resources_by_prefix(
-      `/vinted/offers/${req.params.id}`
+    const offer = await Offer.findOneAndDelete({
+      _id: req.params.id,
+      //owner: req.user,
+    });
+
+    const imgID = offer.product_image.secure_url
+      .split("/")
+      [offer.product_image.secure_url.split("/").length - 1].split(".")[0];
+
+    await cloudinary.uploader.destroy(
+      `vinted/offers/${req.params.id}/${imgID}`
     );
-    //Une fois le dossier vide, je peux le supprimer !
-    await cloudinary.api.delete_folder(`/vinted/offers/${req.params.id}`);
-    // Je vais chercher l'offre dans mongoDB
-    offerToDelete = await Offer.findById(req.params.id);
-    // Je la supprime
-    await offerToDelete.delete();
-    res.status(200).json("Offer deleted succesfully !");
+
+    await cloudinary.api.delete_folder(`vinted/offers/${req.params.id}`);
+
+    return res.status(200).json({ message: "deleted" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(400).json({ message: error.message });
   }
 });
 
+router.put("/offer/archive/:id", isAuthenticated, async (req, res) => {
+  try {
+    const offer = await Offer.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        //owner: req.user,
+      },
+      { archive: true },
+      { returnOriginal: false }
+    );
+
+    return res.status(200).json({ message: "archived" });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+});
 module.exports = router;
