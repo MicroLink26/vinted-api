@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
+    "start": "node swagger.js",
     "dev": "npx nodemon index.js",
     "swagger-autogen": "node swagger.js"
   },
@@ -16,7 +16,6 @@
     "app-root-path": "^3.0.0",
     "faker": "^5.5.3",
     "lodash": "^4.17.21",
-    "morgan": "^1.10.0",
     "stripe": "^9.12.0",
     "cloudinary": "^1.37.0",
     "cors": "^2.8.5",
