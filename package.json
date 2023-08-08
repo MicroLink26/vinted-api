@@ -16,7 +16,6 @@
     "app-root-path": "^3.0.0",
     "faker": "^5.5.3",
     "lodash": "^4.17.21",
-    "morgan": "^1.10.0",
     "stripe": "^9.12.0",
     "cloudinary": "^1.37.0",
     "cors": "^2.8.5",
